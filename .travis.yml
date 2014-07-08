@@ -1,0 +1,13 @@
+language: python
+python:
+- '2.7'
+install:
+- pip install -r requirements.txt
+script: python test.py
+deploy:
+  provider: heroku
+  api_key:
+    secure: VsLeTg541KCK5z33b4BkYEJvH/BswVZMutdy5bEuQI1UZTkx2VYCMDydT5OdaVbzjPSi8XKeu1KQhen0iQtGB4/P+YXgNElQKbwXovyQ+9HEa+L63mQIiiM0uREodSdF+UVSIuE8t6ssF4/mZnjw4i5l01EXI/4N6kzktAwEPfc=
+  app: search-api
+  on:
+    repo: LandRegistry/search-api
