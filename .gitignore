@@ -54,3 +54,6 @@ docs/_build/
 
 # Vagrant stuff
 .vagrant/
+
+# DS Store file
+.DS_Store
