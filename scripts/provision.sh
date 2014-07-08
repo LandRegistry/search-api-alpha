@@ -13,4 +13,7 @@ sudo apt-get install -y python-pip
 echo Installing Flask...
 sudo pip install flask
 
+echo Installing Elastic Search
+sudo pip install elasticsearch
+
 echo 'cd /vagrant' >> /home/vagrant/.bash_profile
