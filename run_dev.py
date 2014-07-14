@@ -1,2 +1,3 @@
-from search-api.server import app
-app.run(host="0.0.0.0", port=5002, debug=True)
+from search.server import app
+import os
+app.run(host="0.0.0.0", port=int(os.environ['PORT']), debug=True)
