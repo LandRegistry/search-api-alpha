@@ -1,7 +1,7 @@
 from datetime import datetime
 from elasticsearch import Elasticsearch
 
-from flask import jsonify,request
+from flask import jsonify, request, abort
 
 from search import app
 
@@ -78,7 +78,10 @@ def title(title_no):
     })
 
     hits = _get_hits(raw_result)
-    return jsonify({'title': _get_item(hits[0])})
+    if hits:
+        return jsonify({'title': _get_item(hits[0])})
+    else:
+        return abort(404)
 
 
 @app.route('/search', methods=['GET'])
