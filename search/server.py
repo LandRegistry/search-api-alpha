@@ -83,7 +83,7 @@ def title(title_no):
 
 @app.route('/search', methods=['GET'])
 def search():
-    query = request.args.get('query')
+    query = request.args.get('query').lower()
 
     raw_result = es.search(index="my_index", body={
         "query": {
