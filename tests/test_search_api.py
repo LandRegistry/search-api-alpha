@@ -15,5 +15,7 @@ class SearchAPITestCase(unittest.TestCase):
 
     def test_get_one_title_back(self):
         title_no = 'DN100'
+        self.app = server.app.test_client()
+        self.app.get('/load/')
         rv = self.app.get('/title/' + title_no)
         assert 'DN100' in rv.data
