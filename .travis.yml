@@ -6,6 +6,8 @@ install:
     - pip install -r requirements_test.txt
 env:
     - SETTINGS = 'config.TestConfig'
+services:
+    - elasticsearch
 script: py.test
 deploy:
   provider: heroku

@@ -17,50 +17,81 @@ def index():
 @app.route('/load', methods=['GET'])
 def load():
     # datetimes will be serialized
+    es.indices.delete(index='*')
     es.index(index="my_index", doc_type="titles", id=1,
-             body={"title_number": "DN100", "timestamp": datetime.now(), "proprietor": "Matt Pease",
-                   "A-Register": "This is the A Register", "B-Register": "This is the B Register",
-                   "C-Register": "This is the C Register"})
+             body={
+                'title_id': "DN100",
+                'proprietors': [
+                    {
+                        'first_name': "Simon",
+                        'last_name': "Tsang"
+                    },
+                    {
+                        'first_name': "Matt",
+                        'last_name': "Pease"
+                    }
+                ],
+                'property' : {
+                    'address': {
+                        'line_1': "1 High Street",
+                        'line_2': "Croydon",
+                        'postcode': "CR0 0NN",
+                    },
+                    'tenure': "freehold",
+                    'class_of_title': "absolute",
+                },
+                'payment': {
+                    'price_paid': "1234500",
+                    'titles': ["DN100"]
+                }
+            })
 
     es.index(index="my_index", doc_type="titles", id=2,
-             body={"title_number": "DN101", "timestamp": datetime.now(), "proprietor": "Simon Tsang",
-                   "A-Register": "This is the A Register", "B-Register": "This is the B Register",
-                   "C-Register": "This is the C Register"})
-
+             body={
+                'title_id': "DN101",
+                'proprietors': [
+                    {
+                        'first_name': "Simon",
+                        'last_name': "Chapman"
+                    }
+                ],
+                'property' : {
+                    'address': {
+                        'line_1': "13 High Street",
+                        'line_2': "Croydon",
+                        'postcode': "CR0 1NN",
+                    },
+                    'tenure': "freehold",
+                    'class_of_title': "absolute",
+                },
+                'payment': {
+                    'price_paid': "12500",
+                    'titles': ["DN101"]
+                }
+            })
     es.index(index="my_index", doc_type="titles", id=3,
-             body={"title_number": "DN103", "timestamp": datetime.now(), "proprietor": "Paul Trelease",
-                   "A-Register": "This is the A Register", "B-Register": "This is the B Register",
-                   "C-Register": "This is the C Register"})
-
-    es.index(index="my_index", doc_type="titles", id=4,
-             body={"title_number": "DN104", "timestamp": datetime.now(), "proprietor": "Matt Shaw",
-                   "A-Register": "This is the A Register", "B-Register": "This is the B Register",
-                   "C-Register": "This is the C Register"})
-
-    es.index(index="my_index", doc_type="titles", id=5,
-             body={"title_number": "DN105", "timestamp": datetime.now(), "proprietor": "Alan Hughes",
-                   "A-Register": "This is the A Register", "B-Register": "This is the B Register",
-                   "C-Register": "This is the C Register"})
-
-    es.index(index="my_index", doc_type="titles", id=6,
-             body={"title_number": "DN106", "timestamp": datetime.now(), "proprietor": "Simon Chapman",
-                   "A-Register": "This is the A Register", "B-Register": "This is the B Register",
-                   "C-Register": "This is the C Register"})
-
-    es.index(index="my_index", doc_type="titles", id=7,
-             body={"title_number": "DN107", "timestamp": datetime.now(), "proprietor": "Andy Porter",
-                   "A-Register": "This is the A Register", "B-Register": "This is the B Register",
-                   "C-Register": "This is the C Register"})
-
-    es.index(index="my_index", doc_type="titles", id=8,
-             body={"title_number": "DN108", "timestamp": datetime.now(), "proprietor": "Simon Tsang",
-                   "A-Register": "This is the A Register", "B-Register": "This is the B Register",
-                   "C-Register": "This is the C Register"})
-
-    es.index(index="my_index", doc_type="titles", id=9,
-             body={"title_number": "DN109", "timestamp": datetime.now(), "proprietor": "Simon Tsang",
-                   "A-Register": "This is the A Register", "B-Register": "This is the B Register",
-                   "C-Register": "This is the C Register"})
+             body={
+                'title_id': "DN102",
+                'proprietors': [
+                    {
+                        'first_name': "Matt",
+                        'last_name': "Shaw"
+                    }
+                ],
+                'property' : {
+                    'address': {
+                        'line_1': "13 Low Street",
+                        'line_2': "Croydon",
+                        'postcode': "CR2 1NN",
+                    },
+                    'tenure': "leasehold",
+                    'class_of_title': "absolute",
+                },
+                'payment': {
+                    'price_paid': "12500",
+                    'titles': ["DN102"]
+                }
+            })
     # but not deserialized
     result = es.search(index="my_index", doc_type="titles", body={"query": {"match_all": {}}})
 
@@ -73,7 +104,7 @@ def title(title_no):
 
     raw_result = es.search(index="my_index", body={
         "query": {
-            "match": {"title_number": title_number}
+            "match": {"title_id": title_number}
         }
     })
 
@@ -94,8 +125,9 @@ def search():
                 "tie_breaker": 0.7,
                 "boost": 1.2,
                 "queries": [
-                    {"term": {"title_number": query}},
-                    {"term": {"proprietor": query}}
+                    {"term": {"title_id": query}},
+                    {"term": {"first_name": query}},
+                    {"term": {"last_name": query}}
                 ]
             }
         }

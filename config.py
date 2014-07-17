@@ -10,5 +10,5 @@ class DevelopmentConfig(Config):
 
 class TestConfig(DevelopmentConfig):
     TESTING = True
-    SYSTEM_OF_RECORD_URI = os.environ.get('http://localhost:8000')
-    ES_URI = os.environ.get('http://localhost:9200')
+    SYSTEM_OF_RECORD_URI = 'http://localhost:8000'
+    ES_URI = '127.0.0.1'
