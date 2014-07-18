@@ -25,6 +25,7 @@ def load():
     # datetimes will be serialized
     es.indices.delete(index='*')
     es.indices.create(index="my_index")
+    es.indices.reindex()
     es.index(index="my_index", doc_type="titles", id=1,
              body={
                 'title_number': "DN100",
