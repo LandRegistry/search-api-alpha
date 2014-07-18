@@ -13,14 +13,21 @@ es = Elasticsearch()
 def index():
     return 'OK!'
 
+#@app.route('/load' , method=['PUT'])
+#def load_title():
+ # get data blob from req.json
+ #
+ #es.index(index="my_index", doc_type="titles", id=1, body= json)
+
 
 @app.route('/load', methods=['GET'])
 def load():
     # datetimes will be serialized
     es.indices.delete(index='*')
+    es.indices.create(index="my_index")
     es.index(index="my_index", doc_type="titles", id=1,
              body={
-                'title_id': "DN100",
+                'title_number': "DN100",
                 'proprietors': [
                     {
                         'first_name': "Simon",
@@ -48,7 +55,7 @@ def load():
 
     es.index(index="my_index", doc_type="titles", id=2,
              body={
-                'title_id': "DN101",
+                'title_number': "DN101",
                 'proprietors': [
                     {
                         'first_name': "Simon",
@@ -71,7 +78,7 @@ def load():
             })
     es.index(index="my_index", doc_type="titles", id=3,
              body={
-                'title_id': "DN102",
+                'title_number': "DN102",
                 'proprietors': [
                     {
                         'first_name': "Matt",
@@ -104,7 +111,7 @@ def title(title_no):
 
     raw_result = es.search(index="my_index", body={
         "query": {
-            "match": {"title_id": title_number}
+            "match": {"title_number": title_number}
         }
     })
 
@@ -125,7 +132,7 @@ def search():
                 "tie_breaker": 0.7,
                 "boost": 1.2,
                 "queries": [
-                    {"term": {"title_id": query}},
+                    {"term": {"title_number": query}},
                     {"term": {"first_name": query}},
                     {"term": {"last_name": query}}
                 ]
