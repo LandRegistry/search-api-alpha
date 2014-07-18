@@ -25,7 +25,7 @@ def load_title():
     if json:
         es.index(index="my_index", doc_type="titles", body=json)
         return "loaded"
-    else
+    else:
         return "invalid JSON provided"
 
 @app.route('/load_test_data', methods=['GET'])
