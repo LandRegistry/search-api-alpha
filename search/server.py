@@ -13,14 +13,22 @@ es = Elasticsearch()
 def index():
     return 'OK!'
 
-#@app.route('/load' , method=['PUT'])
-#def load_title():
- # get data blob from req.json
- #
- #es.index(index="my_index", doc_type="titles", id=1, body= json)
+@app.route('/clear', methods=['GET'])
+def clear():
+    es.indices.delete(index='*')
+    return 'ElasticSearch cleared'
 
 
-@app.route('/load', methods=['GET'])
+@app.route('/load' , methods=['PUT'])
+def load_title():
+    json = request.json
+    if json:
+        es.index(index="my_index", doc_type="titles", body=json)
+        return "loaded"
+    else
+        return "invalid JSON provided"
+
+@app.route('/load_test_data', methods=['GET'])
 def load():
     # datetimes will be serialized
     es.indices.delete(index='*')
@@ -77,6 +85,7 @@ def load():
                     'titles': ["DN101"]
                 }
             })
+
     es.index(index="my_index", doc_type="titles", id=3,
              body={
                 'title_number': "DN102",
@@ -102,14 +111,12 @@ def load():
             })
     # but not deserialized
     result = es.search(index="my_index", doc_type="titles", body={"query": {"match_all": {}}})
-
     return jsonify(result)
 
 
 @app.route('/title/<title_no>', methods=['GET'])
 def title(title_no):
     title_number = title_no
-
     raw_result = es.search(index="my_index", body={
         "query": {
             "match": {"title_number": title_number}
