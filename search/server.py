@@ -1,7 +1,5 @@
-from datetime import datetime
 from elasticsearch import Elasticsearch
-
-from flask import jsonify, request, abort
+from flask import jsonify, request, abort, Response
 
 from search import app
 
@@ -24,9 +22,9 @@ def load_title():
     json = request.json
     if json:
         es.index(index="my_index", doc_type="titles", body=json)
-        return "loaded"
+        return Response(status = 201)
     else:
-        return "invalid JSON provided"
+        return Response(status = 400)
 
 @app.route('/load_test_data', methods=['GET'])
 def load():
