@@ -1,38 +1,45 @@
 from elasticsearch import Elasticsearch
-from flask import jsonify, request, abort, Response
+from flask import jsonify, request, Response
 
 from search import app
 
 # by default we connect to localhost:9200
 es = Elasticsearch()
 
-
 @app.route('/', methods=['GET'])
 def index():
     return 'OK!'
 
+
+#TODO How about a Blueprint to separate out the
+# management endpoints (load, clear etc) and
+# and the query endpoints?
+
+#TODO maybe lock down this url :)
 @app.route('/clear', methods=['GET'])
 def clear():
     es.indices.delete(index='*')
     return 'ElasticSearch cleared'
 
 
-@app.route('/load' , methods=['PUT'])
-def load_title():
+@app.route('/load/<string:index>' , methods=['PUT'])
+def load_title(index):
     json = request.json
     if json:
-        es.index(index="my_index", doc_type="titles", body=json)
+        es.index(index=index, doc_type="titles", body=json)
         return Response(status = 201)
     else:
         return Response(status = 400)
 
+
+# Time to remove these?
 @app.route('/load_test_data', methods=['GET'])
 def load():
     # datetimes will be serialized
     es.indices.delete(index='*')
-    es.indices.create(index="my_index")
-    es.indices.refresh(index="my_index")
-    es.index(index="my_index", doc_type="titles", id=1,
+    es.indices.create(index="public_titles")
+    es.indices.refresh(index="public_titles")
+    es.index(index="public_titles", doc_type="titles", id=1,
              body={
                 'title_number': "DN100",
                 'proprietors': [
@@ -60,7 +67,7 @@ def load():
                 }
             })
 
-    es.index(index="my_index", doc_type="titles", id=2,
+    es.index(index="public_titles", doc_type="titles", id=2,
              body={
                 'title_number': "DN101",
                 'proprietors': [
@@ -84,7 +91,7 @@ def load():
                 }
             })
 
-    es.index(index="my_index", doc_type="titles", id=3,
+    es.index(index="public_titles", doc_type="titles", id=3,
              body={
                 'title_number': "DN102",
                 'proprietors': [
@@ -108,31 +115,40 @@ def load():
                 }
             })
     # but not deserialized
-    result = es.search(index="my_index", doc_type="titles", body={"query": {"match_all": {}}})
+    result = es.search(index="public_titles", doc_type="titles", body={"query": {"match_all": {}}})
     return jsonify(result)
 
+#NOTE : Alternative to the above view function below
+from search.resources import PublicTitleResource, AuthenticatedTitleResource
+from flask.ext.restful import Api
+api = Api(app)
+api.add_resource(PublicTitleResource, '/titles/<string:title_number>')
 
-@app.route('/title/<title_no>', methods=['GET'])
-def title(title_no):
-    title_number = title_no
-    raw_result = es.search(index="my_index", body={
-        "query": {
-            "match": {"title_number": title_number}
-        }
-    })
+#This will be moved to anothe api server asap
+api.add_resource(AuthenticatedTitleResource, '/auth/titles/<string:title_number>')
 
-    hits = _get_hits(raw_result)
-    if hits:
-        return jsonify({'title': _get_item(hits[0])})
-    else:
-        return abort(404)
+# instead of this
+# @app.route('/titles/<title_number>', methods=['GET'])
+# def title(title_number):
+#     app.logger.info("Search for title number %s" % title_number)
+#     raw_result = es.search(index="my_index", body={
+#         "query": {
+#             "match": {"title_number": title_number}
+#         }
+#     })
+
+#     hits = _get_hits(raw_result)
+#     if hits:
+#         return jsonify({'title': _get_item(hits[0])})
+#     else:
+#         return abort(404)
 
 
 @app.route('/search', methods=['GET'])
 def search():
     query = request.args.get('query').lower()
 
-    raw_result = es.search(index="my_index", body={
+    raw_result = es.search(index="public_titles", body={
         "query": {
             "dis_max": {
                 "tie_breaker": 0.7,
