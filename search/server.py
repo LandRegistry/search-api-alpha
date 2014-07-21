@@ -5,7 +5,7 @@ from search import app
 
 # Connect to the host and port as defined in the config (which in turn come from the OS environment)
 es = Elasticsearch([
-    {'host': app.config['ELASTICSEARCH_HOST'], 'port': app.config['ELASTICSEARCH_PORT'], 
+    {'host': app.config['ELASTICSEARCH_HOST'], 'port': app.config['ELASTICSEARCH_PORT'],
     'use_ssl': app.config['ELASTICSEARCH_USESSL'], 'http_auth': app.config['ELASTICSEARCH_USERPASS']}
 ])
 
@@ -28,6 +28,7 @@ def clear():
 @app.route('/load/<string:index>' , methods=['PUT'])
 def load_title(index):
     json = request.json
+    app.logger.info("Load request for data %s and index %s" % (json, index))
     if json:
         es.index(index=index, doc_type="titles", body=json)
         return Response(status = 201)
@@ -149,7 +150,10 @@ api.add_resource(AuthenticatedTitleResource, '/auth/titles/<string:title_number>
 
 @app.route('/search', methods=['GET'])
 def search():
+    #need some logging on method like this
     query = request.args.get('query').lower()
+
+    app.logger.info("Searching for %s on Elastic Search %s" % (query, app.config['ELASTICSEARCH_HOST']))
 
     raw_result = es.search(index="public_titles", body={
         "query": {
