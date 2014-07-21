@@ -3,7 +3,15 @@ Flask-RESTful==0.2.12
 Jinja2==2.7.3
 MarkupSafe==0.23
 Werkzeug==0.9.6
+aniso8601==0.82
 elasticsearch==1.1.1
+eventlet==0.15.0
+greenlet==0.4.2
+gunicorn==19.0.0
 itsdangerous==0.24
+py==1.4.21
+pytest==2.5.2
+pytz==2014.4
+six==1.7.3
 urllib3==1.9
 wsgiref==0.1.2
