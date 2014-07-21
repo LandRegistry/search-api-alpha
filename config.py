@@ -12,3 +12,7 @@ class DevelopmentConfig(Config):
 
 class TestConfig(DevelopmentConfig):
     TESTING = True
+    ELASTICSEARCH_HOST = 'localhost'
+    ELASTICSEARCH_PORT = '9200'
+    ELASTICSEARCH_USESSL = ''
+    ELASTICSEARCH_USERPASS = ''
