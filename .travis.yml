@@ -6,6 +6,8 @@ install:
     - pip install -r requirements_test.txt
 env:
     - SETTINGS = 'config.TestConfig'
+    - ELASTICSEARCH_HOST = 'localhost'
+    - ELASTICSEARCH_PORT = '9200'
 services:
     - elasticsearch
 script: py.test

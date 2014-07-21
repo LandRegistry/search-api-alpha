@@ -3,7 +3,7 @@ from flask import jsonify, request, Response
 
 from search import app
 
-# by default we connect to localhost:9200
+# Connect to the host and port as defined in the config (which in turn come from the OS environment)
 es = Elasticsearch(host=app.config['ELASTICSEARCH_HOST'], port=app.config['ELASTICSEARCH_PORT'])
 
 @app.route('/', methods=['GET'])
