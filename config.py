@@ -4,6 +4,7 @@ class Config(object):
     DEBUG = False
     ELASTICSEARCH_HOST = os.environ.get('ELASTICSEARCH_HOST')
     ELASTICSEARCH_PORT = os.environ.get('ELASTICSEARCH_PORT')
+    ELASTICSEARCH_USESSL = os.environ.get('ELASTICSEARCH_USESSL')
 
 class DevelopmentConfig(Config):
     DEBUG = True
