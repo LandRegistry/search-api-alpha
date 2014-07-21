@@ -37,7 +37,7 @@ class PublicTitleResource(Resource):
             app.logger.info('Found title %s' % title)
             return title
         else:
-            abort(404, message="Title number %s not found" % title_number )
+            abort(404)
 
 
 class AuthenticatedTitleResource(Resource):
