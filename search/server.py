@@ -5,7 +5,8 @@ from search import app
 
 # Connect to the host and port as defined in the config (which in turn come from the OS environment)
 es = Elasticsearch([
-    {'host': app.config['ELASTICSEARCH_HOST'], 'port': app.config['ELASTICSEARCH_PORT'], 'use_ssl': app.config['ELASTICSEARCH_USESSL']}
+    {'host': app.config['ELASTICSEARCH_HOST'], 'port': app.config['ELASTICSEARCH_PORT'], 
+    'use_ssl': app.config['ELASTICSEARCH_USESSL'], 'http_auth': app.config['ELASTICSEARCH_USERPASS']}
 ])
 
 @app.route('/', methods=['GET'])
