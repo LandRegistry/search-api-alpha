@@ -5,7 +5,7 @@ from search import app
 
 # Connect to the host and port as defined in the config (which in turn come from the OS environment)
 es = Elasticsearch([
-    {'host': app.config['ELASTICSEARCH_HOST'], 'port': app.config['ELASTICSEARCH_PORT'], 
+    {'host': app.config['ELASTICSEARCH_HOST'], 'port': app.config['ELASTICSEARCH_PORT'],
     'use_ssl': app.config['ELASTICSEARCH_USESSL'], 'http_auth': app.config['ELASTICSEARCH_USERPASS']}
 ])
 
@@ -57,8 +57,9 @@ def load():
                 ],
                 'property' : {
                     'address': {
-                        'line_1': "1 High Street",
-                        'line_2': "Croydon",
+                        'house_number': "1",
+                        'road': "High Street",
+                        'town': "Croydon",
                         'postcode': "CR0 0NN",
                     },
                     'tenure': "freehold",
@@ -81,8 +82,9 @@ def load():
                 ],
                 'property' : {
                     'address': {
-                        'line_1': "13 High Street",
-                        'line_2': "Croydon",
+                        'house_number': "13",
+                        'road': "High Street",
+                        'town': "Croydon",
                         'postcode': "CR0 1NN",
                     },
                     'tenure': "freehold",
@@ -105,8 +107,9 @@ def load():
                 ],
                 'property' : {
                     'address': {
-                        'line_1': "13 Low Street",
-                        'line_2': "Croydon",
+                        'house_number': "13",
+                        'road': "Low Street",
+                        'town': "Croydon",
                         'postcode': "CR2 1NN",
                     },
                     'tenure': "leasehold",
