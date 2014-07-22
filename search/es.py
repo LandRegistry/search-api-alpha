@@ -2,6 +2,13 @@ from elasticsearch import Elasticsearch
 
 from search import app
 
+def _get_hits(raw_result):
+    hits = raw_result.get('hits')
+    return hits.get('hits')
+
+
+def _get_item(raw_result):
+    return raw_result.get("_source")
 
 class Search(object):
 
@@ -38,10 +45,3 @@ class Search(object):
     def index(self, **kwargs):
         return self.es.index(**kwargs)
 
-    def _get_hits(raw_result):
-        hits = raw_result.get('hits')
-        return hits.get('hits')
-
-
-    def _get_item(raw_result):
-        return raw_result.get("_source")
