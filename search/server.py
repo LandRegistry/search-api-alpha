@@ -151,20 +151,16 @@ api.add_resource(AuthenticatedTitleResource, '/auth/titles/<string:title_number>
 @app.route('/search', methods=['GET'])
 def search():
     #need some logging on method like this
-    query = request.args.get('query').lower()
+    query = request.args.get('query')
 
     app.logger.info("Searching for %s on Elastic Search %s" % (query, app.config['ELASTICSEARCH_HOST']))
 
     raw_result = es.search(index="public_titles", body={
         "query": {
-            "dis_max": {
-                "tie_breaker": 0.7,
-                "boost": 1.2,
-                "queries": [
-                    {"term": {"title_number": query}},
-                    {"term": {"first_name": query}},
-                    {"term": {"last_name": query}}
-                ]
+            "multi_match" : { # once we get more complicated we may need to merge multiple query types, until then, this will do
+                "query":      query,
+                "type":       "phrase_prefix", # best_fields seems to do full matching only
+                "fields":     [ "title_number^3", "first_name", "last_name^2" ]
             }
         }
     })
