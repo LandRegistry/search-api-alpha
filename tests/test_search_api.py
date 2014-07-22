@@ -46,5 +46,5 @@ class SearchAPITestCase(unittest.TestCase):
         # call with "some" json...
         self.app.put('/load/' + index, data=data, content_type='application/json')
         mock_index.assert_called_with(
-            index=index, doc_type="titles", body={u'foo':u'bar'}
+            index=index, doc_type="titles", body=json.loads(data)
         )
