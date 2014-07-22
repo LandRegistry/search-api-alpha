@@ -58,8 +58,9 @@ def load():
                 ],
                 'property' : {
                     'address': {
-                        'line_1': "1 High Street",
-                        'line_2': "Croydon",
+                        'house_number': "1",
+                        'road': "High Street",
+                        'town': "Croydon",
                         'postcode': "CR0 0NN",
                     },
                     'tenure': "freehold",
@@ -82,8 +83,9 @@ def load():
                 ],
                 'property' : {
                     'address': {
-                        'line_1': "13 High Street",
-                        'line_2': "Croydon",
+                        'house_number': "13",
+                        'road': "High Street",
+                        'town': "Croydon",
                         'postcode': "CR0 1NN",
                     },
                     'tenure': "freehold",
@@ -106,8 +108,9 @@ def load():
                 ],
                 'property' : {
                     'address': {
-                        'line_1': "13 Low Street",
-                        'line_2': "Croydon",
+                        'house_number': "13",
+                        'road': "Low Street",
+                        'town': "Croydon",
                         'postcode': "CR2 1NN",
                     },
                     'tenure': "leasehold",
