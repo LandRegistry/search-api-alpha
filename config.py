@@ -16,3 +16,12 @@ class TestConfig(DevelopmentConfig):
     ELASTICSEARCH_PORT = '9200'
     ELASTICSEARCH_USESSL = ''
     ELASTICSEARCH_USERPASS = ''
+
+class DockerConfig(object):
+    DEBUG = True
+    ELASTICSEARCH_HOST = os.environ.get('ELASTICSEARCH_1_PORT_9200_TCP_ADDR')
+    ELASTICSEARCH_PORT = os.environ.get('ELASTICSEARCH_1_PORT_9200_TCP_PORT')
+    ELASTICSEARCH_USESSL = ''
+    ELASTICSEARCH_USERPASS = '' 
+
+
