@@ -8,7 +8,9 @@ env:
     - SETTINGS='config.TestConfig' ELASTICSEARCH_HOST='localhost' ELASTICSEARCH_PORT='9200' ELASTICSEARCH_USESSL='' ELASTICSEARCH_USERPASS=''
 services:
     - elasticsearch
-script: py.test
+script: py.test --cov searchapi tests/ --cov-report=term --cov-report=html
+after_success:
+  - coveralls
 deploy:
   provider: heroku
   api_key:
