@@ -1,8 +1,7 @@
-from search import server
+from searchapi import server
 
 import unittest
 import json
-import calendar
 import mock
 
 
@@ -13,7 +12,7 @@ class SearchAPITestCase(unittest.TestCase):
         self.app = server.app.test_client()
 
 
-    @mock.patch("search.es.Search.get")
+    @mock.patch("searchapi.es.Search.get")
     def test_search(self, mock_get):
         title_number = 'DN100'
         mock_get.return_value = {'title_number' : title_number }
@@ -23,11 +22,11 @@ class SearchAPITestCase(unittest.TestCase):
 
         assert 'DN100' in rv.data
 
-    @mock.patch("search.es.Search.search")
+    @mock.patch("searchapi.es.Search.search")
     def test_get_one_title_back(self, mock_search):
         title_number = 'DN100'
 
-        rv = self.app.get('/titles/' + title_number)
+        self.app.get('/titles/' + title_number)
         mock_search.assert_called_with(
             index='public_titles',
             body={
@@ -38,7 +37,7 @@ class SearchAPITestCase(unittest.TestCase):
                 }
             })
 
-    @mock.patch("search.es.Search.index")
+    @mock.patch("searchapi.es.Search.index")
     def test_load(self, mock_index):
         index = 'authenticated_titles'
         data = json.dumps({'foo':'bar'})

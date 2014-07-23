@@ -1,6 +1,6 @@
 from flask.ext.restful import Resource, fields, marshal_with, reqparse, abort
 
-from search.server import app, es
+from searchapi.server import app, es
 
 def get_hits(raw_result):
     hits = raw_result.get('hits')

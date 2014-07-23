@@ -9,8 +9,6 @@ eventlet==0.15.0
 greenlet==0.4.2
 gunicorn==19.0.0
 itsdangerous==0.24
-py==1.4.21
-pytest==2.5.2
 pytz==2014.4
 six==1.7.3
 urllib3==1.9
