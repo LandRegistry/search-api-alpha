@@ -1,8 +1,9 @@
 
+
 from flask import jsonify, request, Response
 
-from search import app
-from search.es import Search
+from searchapi import app
+from searchapi.es import Search
 
 es = Search()
 
@@ -26,7 +27,7 @@ def load_title(index):
 
 
 #NOTE : Alternative to the above view function below
-from search.resources import PublicTitleResource, AuthenticatedTitleResource
+from searchapi.resources import PublicTitleResource, AuthenticatedTitleResource
 from flask.ext.restful import Api
 api = Api(app)
 api.add_resource(PublicTitleResource, '/titles/<string:title_number>')

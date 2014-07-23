@@ -1,6 +1,6 @@
 from elasticsearch import Elasticsearch
 
-from search import app
+from searchapi import app
 
 def _get_hits(raw_result):
     hits = raw_result.get('hits')
