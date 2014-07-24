@@ -25,6 +25,7 @@ class SearchAPITestCase(unittest.TestCase):
     @mock.patch("searchapi.es.Search.search")
     def test_get_one_title_back(self, mock_search):
         title_number = 'DN100'
+	mock_search.return_value = {'hits':{}}
 
         self.app.get('/titles/' + title_number)
         mock_search.assert_called_with(
