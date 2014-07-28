@@ -2,24 +2,29 @@
 
 from flask import jsonify, request, Response
 
+from .health import Health
+
 from searchapi import app
 from searchapi.es import Search
 
 es = Search()
+Health(app, checks=[es.health])
+
 
 @app.route('/', methods=['GET'])
 def index():
     return 'OK!'
 
-@app.route('/load/<string:index>' , methods=['PUT'])
+
+@app.route('/load/<string:index>', methods=['PUT'])
 def load_title(index):
     json = request.json
     app.logger.info("Load request for data %s and index %s" % (json, index))
     if json:
         es.index(index=index, doc_type="titles", body=json)
-        return Response(status = 201)
+        return Response(status=201)
     else:
-        return Response(status = 400)
+        return Response(status=400)
 
 #TODO How about a Blueprint to separate out the
 # management endpoints (load, clear etc) and
@@ -33,7 +38,10 @@ api = Api(app)
 api.add_resource(PublicTitleResource, '/titles/<string:title_number>')
 
 #This will be moved to anothe api server asap
-api.add_resource(AuthenticatedTitleResource, '/auth/titles/<string:title_number>')
+api.add_resource(
+    AuthenticatedTitleResource,
+    '/auth/titles/<string:title_number>')
+
 
 @app.route('/search', methods=['GET'])
 def search():
@@ -41,4 +49,4 @@ def search():
     query = request.args.get('query').lower()
 
     result = es.get(query)
-    return jsonify( {"results" : result })
+    return jsonify({"results": result})
