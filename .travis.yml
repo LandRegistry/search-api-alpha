@@ -4,6 +4,7 @@ python:
 install:
     - pip install -r requirements.txt
     - pip install -r requirements_test.txt
+    - pip install python-coveralls
 env:
     - SETTINGS='config.TestConfig' ELASTICSEARCH_HOST='localhost' ELASTICSEARCH_PORT='9200' ELASTICSEARCH_USESSL='' ELASTICSEARCH_USERPASS=''
 services:
