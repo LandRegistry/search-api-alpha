@@ -14,3 +14,5 @@ six==1.7.3
 urllib3==1.9
 wsgiref==0.1.2
 -e git+https://github.com/Runscope/healthcheck.git@9d661a916f3ab630ae21e014758aa2f21fd40097#egg=healthcheck
+raven==5.0.0
+blinker==1.3
