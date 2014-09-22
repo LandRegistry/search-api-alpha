@@ -21,7 +21,7 @@ def load_title(index):
     json = request.json
     app.logger.info("Load request for data %s and index %s" % (json, index))
     if json:
-        es.index(index=index, doc_type="titles", body=json)
+        es.index(index=index, doc_type="titles", body=json, id=json['title_number'])
         return Response(status=201)
     else:
         return Response(status=400)
