@@ -35,7 +35,6 @@ class PublicTitleResource(Resource):
             resp.headers.extend({'Content-Type': 'application/json'})
             return resp
 
-
 class AuthenticatedTitleResource(Resource):
 
     # no marshaller, because the feeder already gave us the data as we need it.

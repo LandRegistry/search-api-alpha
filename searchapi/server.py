@@ -38,15 +38,13 @@ api = Api(app)
 api.add_resource(PublicTitleResource, '/titles/<string:title_number>')
 
 #This will be moved to anothe api server asap
-api.add_resource(
-    AuthenticatedTitleResource,
-    '/auth/titles/<string:title_number>')
+api.add_resource(AuthenticatedTitleResource, '/auth/titles/<string:title_number>')
 
 
 @app.route('/search', methods=['GET'])
 def search():
     #need some logging on method like this
-    query = request.args.get('query').lower()
+    query = request.args.get('query').lower().replace(' ', '')
 
     result = es.get(query)
     return jsonify({"results": result})
