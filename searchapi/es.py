@@ -28,16 +28,11 @@ class Search(object):
             (query, app.config['ELASTICSEARCH_HOST']))
 
         raw_result = self.es.search(index="public_titles", body={
-            "query": {
-                "dis_max": {
-                    "tie_breaker": 0.7,
-                    "boost": 1.2,
-                    "queries": [
-                        {"term": {"title_number": query}},
-                        {"term": {"first_name": query}},
-                        {"term": {"last_name": query}}
-                    ]
-                }
+            "query":{
+            "fuzzy_like_this": {
+                "boost":1.2,
+                "fields": ["title_number", "postcode"],
+                "like_text" : query }
             }
         })
         hits = _get_hits(raw_result)
