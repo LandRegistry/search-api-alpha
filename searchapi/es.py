@@ -27,14 +27,16 @@ class Search(object):
         app.logger.info("Searching for %s on Elastic Search %s" %
             (query, app.config['ELASTICSEARCH_HOST']))
 
+
         raw_result = self.es.search(index="public_titles", body={
             "query":{
-            "fuzzy_like_this": {
-                "boost":1.2,
-                "fields": ["title_number", "postcode"],
-                "like_text" : query }
+                "multi_match": {
+                "query": query,
+                "fields": ["title_number", "postcode"]
+            }
             }
         })
+
         hits = _get_hits(raw_result)
         result = map(_get_item, hits)
         return result
