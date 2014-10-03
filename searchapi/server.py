@@ -1,4 +1,4 @@
-
+import json
 
 from flask import jsonify, request, Response
 
@@ -18,10 +18,10 @@ def index():
 
 @app.route('/load/<string:index>', methods=['PUT'])
 def load_title(index):
-    json = request.json
-    app.logger.info("Load request for data %s and index %s" % (json, index))
-    if json:
-        es.index(index=index, doc_type="titles", body=json, id=json['title_number'])
+    js = json.loads(json.loads(request.data))
+    app.logger.info("Load request for data %s and index %s" % (js, index))
+    if js:
+        es.index(index=index, doc_type="titles", body=js, id=js['title_number'])
         return Response(status=201)
     else:
         return Response(status=400)
