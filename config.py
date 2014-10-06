@@ -12,12 +12,3 @@ class DevelopmentConfig(Config):
 
 class TestConfig(DevelopmentConfig):
     TESTING = True
-
-class DockerConfig(object):
-    DEBUG = True
-    ELASTICSEARCH_HOST = os.environ.get('ELASTICSEARCH_1_PORT_9200_TCP_ADDR')
-    ELASTICSEARCH_PORT = os.environ.get('ELASTICSEARCH_1_PORT_9200_TCP_PORT')
-    ELASTICSEARCH_USESSL = ''
-    ELASTICSEARCH_USERPASS = ''
-
-
