@@ -18,7 +18,7 @@ def index():
 
 @app.route('/load/<string:index>', methods=['PUT'])
 def load_title(index):
-    js = json.loads(json.loads(request.data))
+    js = json.loads(request.data)
     app.logger.info("Load request for data %s and index %s" % (js, index))
     if js:
         es.index(index=index, doc_type="titles", body=js, id=js['title_number'])
