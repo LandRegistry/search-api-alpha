@@ -64,7 +64,7 @@ class SearchAPITestCase(unittest.TestCase):
     @mock.patch('elasticsearch.Elasticsearch.index')
     def test_load(self, mock_index):
         index = 'authenticated_titles'
-        data = json.dumps(json.dumps({'title_number':'title1', 'foo': 'bar'}))
+        data = json.dumps({'title_number':'title1', 'foo': 'bar'})
 
         # call with "some" json...
         response = self.app.put(
@@ -72,7 +72,7 @@ class SearchAPITestCase(unittest.TestCase):
             data=data,
             content_type='application/json')
         mock_index.assert_called_with(
-            index=index, id=u'title1', doc_type="titles", body=json.loads(json.loads(data))
+            index=index, id=u'title1', doc_type="titles", body=json.loads(data)
         )
         assert response.status == '201 CREATED'
 
