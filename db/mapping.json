@@ -1,0 +1,12 @@
+{
+  "mappings": {
+    "address": {
+      "properties": {
+        "postcode": {
+          "type":  "string",
+          "index": "not_analyzed"
+        }
+      }
+    }
+  }
+}
