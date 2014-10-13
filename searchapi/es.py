@@ -32,7 +32,9 @@ class Search(object):
             "query":{
                 "multi_match": {
                 "query": query,
-                "fields": ["title_number", "postcode"]
+                "fields": [
+                    "title_number",
+                    "property_description.fields.addresses.postcode"]
             }
             }
         })

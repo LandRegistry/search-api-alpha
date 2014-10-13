@@ -1,10 +1,39 @@
 {
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "postcode_analyzer": {
+          "type": "custom",
+          "tokenizer": "whitespace",
+          "filter": "lowercase"
+        }
+      }
+    }
+  },
   "mappings": {
-    "address": {
+    "titles": {
       "properties": {
-        "postcode": {
-          "type":  "string",
-          "index": "not_analyzed"
+        "title_number": {
+          "type": "string"
+        },
+        "property_description": {
+          "type": "object",
+          "properties": {
+            "fields": {
+              "type": "object",
+              "properties": {
+                "addresses": {
+                  "type": "object",
+                  "properties": {
+                    "postcode": {
+                      "type": "string",
+                      "analyzer": "postcode_analyzer"
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }
