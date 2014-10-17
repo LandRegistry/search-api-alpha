@@ -1,0 +1,15 @@
+{
+    "titles" : {
+        "dynamic_templates": [
+            {
+                "dates_as_strings_template": {
+                    "path_match": "*.entry_date",
+                    "mapping": {
+                        "type": "string",
+                        "index": "not_analyzed"
+                    }
+                }
+            }
+        ]
+    }
+}
