@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 app.config.from_object(os.environ.get('SETTINGS'))
 
-app.logger.info("\nConfiguration\n%s\n" % app.config)
+app.logger.debug("\nConfiguration\n%s\n" % app.config)
 
 # Sentry exception reporting
 if 'SENTRY_DSN' in os.environ:
