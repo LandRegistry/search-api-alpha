@@ -2,14 +2,24 @@
     "titles" : {
         "dynamic_templates": [
             {
-                "dates_as_strings_template": {
+                "dates_as_strings_template1": {
                     "path_match": "*.entry_date",
                     "mapping": {
                         "type": "string",
                         "index": "not_analyzed"
                     }
                 }
+            },
+          {
+                "dates_as_strings_template2": {
+                    "path_match": "*.date",
+                    "mapping": {
+                        "type": "string",
+                        "index": "not_analyzed"
+                    }
+                }
             }
+
         ]
     }
 }
