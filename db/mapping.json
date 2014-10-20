@@ -1,25 +1,18 @@
 {
-    "titles" : {
-        "dynamic_templates": [
-            {
-                "dates_as_strings_template1": {
-                    "path_match": "*.entry_date",
-                    "mapping": {
-                        "type": "string",
-                        "index": "not_analyzed"
-                    }
-                }
-            },
-          {
-                "dates_as_strings_template2": {
-                    "path_match": "*.date",
-                    "mapping": {
-                        "type": "string",
-                        "index": "not_analyzed"
-                    }
-                }
-            }
-
-        ]
+  "titles" : {
+    "properties": {
+      "title_number": {
+        "type": "string",
+        "analyzer": "keyword"
+      },
+      "postcode": {
+        "type": "string",
+        "analyzer": "keyword"
+      },
+      "body": {
+        "type": "object",
+        "index": "not_analyzed"
+      }
     }
+  }
 }
