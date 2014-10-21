@@ -21,7 +21,15 @@ def load_title(index):
     js = json.loads(request.data)
     app.logger.info("Load request for data %s and index %s" % (js, index))
     if js:
-        es.index(index=index, doc_type="titles", body=js, id=js['title_number'])
+        # indices to be searchable on title_number and postcode only.
+        # (custom mapping to ignore the rest)
+
+        to_index = {
+          'title_number': js['title_number'].replace(" ", "").lower(),
+          'postcode': [address.get('postcode', "").replace(" ", "").lower() for address in js.get('property_description', {}).get('fields', {}).get('addresses', [])],
+          'body': js
+        }
+        es.index(index=index, doc_type="titles", body=to_index, id=js['title_number'])
         return Response(status=201)
     else:
         return Response(status=400)
@@ -44,7 +52,7 @@ api.add_resource(AuthenticatedTitleResource, '/auth/titles/<string:title_number>
 @app.route('/search', methods=['GET'])
 def search():
     #need some logging on method like this
-    query = request.args.get('query').lower()
+    query = request.args.get('query').replace(" ", "").lower()
 
     result = es.get(query)
     return jsonify({"results": result})

@@ -9,7 +9,7 @@ def _get_hits(raw_result):
 
 
 def _get_item(raw_result):
-    return raw_result.get("_source")
+    return raw_result.get("_source", {}).get('body', {})
 
 
 class Search(object):
@@ -34,7 +34,7 @@ class Search(object):
                 "query": query,
                 "fields": [
                     "title_number",
-                    "property_description.fields.addresses.postcode"]
+                    "postcode"]
             }
             }
         })

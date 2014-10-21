@@ -6,34 +6,43 @@ import mock
 
 class SearchAPITestCase(unittest.TestCase):
 
-    test_title_number = 'TEST0000'
+    test_title_number = 'test0000'
 
-    mock_result = {'hits':{
-                        'hits': [ {
-                            '_source': {
-                                'extent': { },
-                                  'payment' : {
-                                    'price_paid': 987654,
-                                    'titles': [
-                                      'TEST0000'
-                                    ]
-                                  },
-                                  'previous_sha256': 'cafebabe',
-                                  'property': {
-                                    'address': {
-                                      'house_number': '33',
-                                      'postcode': 'PL1 1AA',
-                                      'road': 'I hate Road',
-                                      'town': 'Town'
-                                    },
-                                    'class_of_title': 'Absolute',
-                                    'tenure': 'Freehold'
-                                  },
-                                  'title_number': 'TEST0000'
-                            }
-                        } ]
+    mock_result = {
+        'hits':{
+            'hits': [
+                {
+                '_source': {
+                    'title_number': test_title_number,
+                    'postcode': ['pl11aa'],
+                    'body': {
+                        'extent': { },
+                        'payment' : {
+                            'price_paid': 987654,
+                            'titles': [test_title_number]
+                        },
+                        'previous_sha256': 'cafebabe',
+                        'property_description': {
+                            'fields': {
+                                'addresses': [
+                                    {
+                                        'house_number': '33',
+                                        'postcode': 'PL1 1AA',
+                                        'road': 'I hate Road',
+                                        'town': 'Town'
+                                    }
+                                ]
+                            },
+                            'class_of_title': 'Absolute',
+                            'tenure': 'Freehold'
+                        },
+                        'title_number': test_title_number.upper()
+                        }
                     }
                 }
+                ]
+            }
+        }
 
     def setUp(self):
         server.app.config['TESTING'] = True
@@ -63,16 +72,24 @@ class SearchAPITestCase(unittest.TestCase):
 
     @mock.patch('elasticsearch.Elasticsearch.index')
     def test_load(self, mock_index):
+        testtn = 'title1'
         index = 'authenticated_titles'
-        data = json.dumps({'title_number':'title1', 'foo': 'bar'})
+        data = json.dumps({'title_number':testtn, 'foo': 'bar'})
 
-        # call with "some" json...
+        # call with "some" json...`
         response = self.app.put(
             '/load/' + index,
             data=data,
             content_type='application/json')
         mock_index.assert_called_with(
-            index=index, id=u'title1', doc_type="titles", body=json.loads(data)
+                index=index,
+                id=testtn,
+                doc_type="titles",
+                body={
+                    'title_number': testtn,
+                    'postcode': [],
+                    'body': json.loads(data)
+                    }
         )
         assert response.status == '201 CREATED'
 

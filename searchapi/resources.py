@@ -10,12 +10,13 @@ def get_hits(raw_result):
     return hits.get('hits')
 
 def get_item(raw_result):
-    return raw_result.get("_source")
+    return raw_result.get("_source", {}).get('body', {})
 
 class PublicTitleResource(Resource):
 
     # no marshaller, because the feeder already took out the sensitive fields.
     def get(self, title_number):
+        title_number = title_number.replace(" ", "").lower()
         app.logger.info("Search for title number %s" % title_number)
         try:
             raw_result = es.search(index="public_titles", body={
@@ -39,6 +40,7 @@ class AuthenticatedTitleResource(Resource):
 
     # no marshaller, because the feeder already gave us the data as we need it.
     def get(self, title_number):
+        title_number = title_number.replace(" ", "").lower()
         app.logger.info("Search for title number %s" % title_number)
         raw_result = es.search(index="authenticated_titles", body={
             "query": {
