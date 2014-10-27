@@ -8,11 +8,18 @@
       "postcode": {
         "type": "string",
         "analyzer": "keyword"
-      },
-      "body": {
-        "type": "object",
-        "index": "not_analyzed"
       }
-    }
+    },
+    "dynamic_templates":[
+      {
+        "dont_analyze_body_template":{
+            "path_match":"body.*",
+            "mapping":{
+              "store":"yes",
+              "index":"not_analyzed"
+            }
+        }
+      }
+    ]
   }
 }
