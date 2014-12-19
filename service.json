@@ -1,0 +1,16 @@
+{
+  "name": "search-api",
+  "type": "back-end",
+  "github": "https://github.com/LandRegistry/search-api",
+  "heroku": "lr-search-api",
+  "url": "http://lr-search-api.herokuapp.com",
+  "port": 8003,
+  "database": "true",
+  "tech": [
+    "python",
+    "flask"
+  ],
+  "dependencies": [
+    "elastic-search"
+  ]
+}
